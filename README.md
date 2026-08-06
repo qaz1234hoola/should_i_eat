@@ -1,4 +1,4 @@
-# 🥗 should-i-eat
+# 🥗 Should-i-eatzz??
 
 > 👋 **Hello folks!!**
 > 
@@ -16,6 +16,8 @@
 🩺 You can also **add in a medical condition** to check if the product is safe for you!
 
 💬 On a constant look-out to make this website more useful and interesting, **would love your feedback!!**
+
+Try it out [here](https://should-i-eatzz.vercel.app)!
 
 ---
 
