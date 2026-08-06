@@ -25,6 +25,7 @@ export async function POST(req) {
         2. Explain each ingredient in simple, 7th-grade English.
         3. State pros, cons, regular safe limits, and if it belongs in this product type.
         4. Provide an overall quality rating (Green, Yellow, or Red) with a short headline and summary.
+    Respond ONLY with a valid raw JSON object. Do not include markdown formatting or extra text.
     Extract all listed ingredients and return ONLY a valid JSON object matching this EXACT structure:
 
     {
@@ -50,7 +51,13 @@ export async function POST(req) {
     // Send request to Groq's Vision Model
     const response = await groq.chat.completions.create({
       model: 'qwen/qwen3.6-27b',
+      max_tokens: 4096,
       messages: [
+        {
+          role: 'system',
+          content:
+            'You are an expert food ingredient analyzer. Respond ONLY with a valid raw JSON object. Do not include markdown formatting or extra text.',
+        },
         {
           role: 'user',
           content: [
@@ -61,14 +68,31 @@ export async function POST(req) {
             }
           ]
         }
-      ],
-      response_format: { type: 'json_object' }
+      ]
+      // response_format: { type: 'json_object' }
     });
 
-    const parsedData = JSON.parse(response.choices[0].message.content);
+    
+
+    const rawContent = response.choices[0]?.message?.content || '';
+
+    // Extract exact JSON string from first '{' to last '}'
+    const startIndex = rawContent.indexOf('{');
+    const endIndex = rawContent.lastIndexOf('}');
+
+    if (startIndex === -1 || endIndex === -1 || endIndex <= startIndex) {
+      throw new Error('No valid JSON object found in model output.');
+    }
+
+    const jsonString = rawContent.substring(startIndex, endIndex + 1);
+    const parsedData = JSON.parse(jsonString);
+
     return NextResponse.json(parsedData);
   } catch (error) {
     console.error('Groq Ingredient Analysis Error:', error);
-    return NextResponse.json({ error: 'Failed to analyze label image.' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to analyze label image.' },
+      { status: 500 }
+    );
   }
 }
