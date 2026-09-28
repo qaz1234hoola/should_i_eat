@@ -50,7 +50,7 @@ export async function POST(req) {
 
     // Send request to Groq's Vision Model
     const response = await groq.chat.completions.create({
-      model: 'qwen/qwen3.6-27b',
+      model: 'qwen/qwen3.8-27b',
       max_tokens: 4096,
       messages: [
         {
