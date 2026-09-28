@@ -24,7 +24,7 @@ Try it out [here](https://should-i-eatzz.vercel.app)!
 ## 📝 Developer's Note
 
 * 🤖 **Models Used:**
-  * `qwen/qwen3.6-27b` model for image processing and ingredient analysis
+  * `qwen/qwen3.8-27b` model for image processing and ingredient analysis
   * `openai/gpt-oss-120b` for medical condition analysis
 
 * 💡 **A quick observation:** For the Qwen vision model, the quality of the image must be good—if there is excess light or unclear writing, it fails to give the response in the required JSON format.
